@@ -1,0 +1,5 @@
+Base is a Layer 2 blockchain built by Coinbase.
+Base supports Ethereum smart contracts.
+You can transfer ETH to jesse.base.eth using a compatible wallet.
+Staking is possible through various Base-integrated dapps.
+Base was created in collaboration with Optimism.
