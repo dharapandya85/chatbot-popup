@@ -12,7 +12,7 @@ const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 app.use(cors());
 app.use(express.json());
-app.use(express.static(path.join(__dirname, '../public')));
+app.use(express.static(path.join(__dirname, 'public')));
 
 const EMBEDDING_MODEL = "text-embedding-3-small";
 const CHAT_MODEL = "gpt-4o";
@@ -27,7 +27,8 @@ function cosineSimilarity(vecA, vecB) {
 
 // --- RAG Chat Handler ---
 async function chatWithRAG(userQuery) {
-  const vectorStore = JSON.parse(await fs.readFile("./embeddings/vector_store.json", "utf8"));
+  const vectorStorePath=path.join(__dirname,'public/embeddings/vector_store.json');
+  const vectorStore = JSON.parse(await fs.readFile(vectorStorePath, "utf8"));
   const queryEmbedding = (
     await openai.embeddings.create({ model: EMBEDDING_MODEL, input: userQuery })
   ).data[0].embedding;
@@ -70,7 +71,8 @@ app.post('/api/chat', async (req, res) => {
 
 // --- Optional: Embed data manually ---
 app.get('/embed', async (req, res) => {
-  const raw = await fs.readFile("./data/base_knowledge.txt", "utf8");
+  const rawPath=path.join(__dirname,'public/data/base_knowledge.txt');
+  const raw = await fs.readFile(rawPath, "utf8");
   const chunks = raw.split("\n").filter(Boolean);
   const embeddings = await Promise.all(
     chunks.map(async (text) => {
@@ -81,7 +83,8 @@ app.get('/embed', async (req, res) => {
       return { text, embedding: res.data[0].embedding };
     })
   );
-  await fs.writeFile("./embeddings/vector_store.json", JSON.stringify(embeddings, null, 2));
+  const vectorStorePath=path.join(__dirname,'public/embeddings/vector_store.json');
+  await fs.writeFile(vectorStorePath, JSON.stringify(embeddings, null, 2));
   res.send("Embeddings saved.");
 });
 
