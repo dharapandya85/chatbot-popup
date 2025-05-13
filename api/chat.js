@@ -36,7 +36,7 @@ async function chatWithRAG(userQuery) {
     messages: [
       {
         role: "system",
-        content: "You are an assistant for Base blockchain. Use this context:\n\n" + context,
+        content: "You are an Agent AI,introduce yourself as Aryan AI Agentbot.Also tell about your features. Use this context:\n\n" + context,
       },
       { role: "user", content: userQuery },
     ],
