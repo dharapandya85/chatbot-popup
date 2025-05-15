@@ -29,14 +29,19 @@ async function chatWithRAG(userQuery) {
     .sort((a, b) => b.score - a.score)
     .slice(0, 3);
 
-  const context = topChunks.map((c) => c.text).join("\n");
+  const context = topChunks.map((c) => c.text).join("\n\n");
+
+  const systemPrompt=
+  topChunks.length===0
+ ? "You are Aryan AI Agentbot, an intelligent assistant. Answer the user directly and clearly."
+ : `You are an AI assistant. Use the following context to answer the user's question. Format the output clearly with one-line gaps between bullet points or numbered items.\n\nContext:\n${context}`;
 
   const completion = await openai.chat.completions.create({
     model: CHAT_MODEL,
     messages: [
       {
         role: "system",
-        content: "You are an Agent AI,introduce yourself as Aryan AI Agentbot.Also tell about your features. Use this context:\n\n" + context,
+        content: systemPrompt
       },
       { role: "user", content: userQuery },
     ],
