@@ -34,7 +34,7 @@ async function chatWithRAG(userQuery) {
   const systemPrompt=
   topChunks.length===0
  ? "You are Aryan AI Agentbot, an intelligent assistant. Answer the user directly and clearly."
- : `You are an AI assistant. Use the following context to answer the user's question. Format the output clearly with one-line gaps between bullet points or numbered items.\n\nContext:\n${context}`;
+ : `You are an AI assistant. Use the following context to answer the user's question. Format the output clearly  Markdown formatting like bold, numbered steps, and paragraphs for instructions.\n\nContext:\n${context}`;
 
   const completion = await openai.chat.completions.create({
     model: CHAT_MODEL,
